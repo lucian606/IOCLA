@@ -1,0 +1,58 @@
+324CC_Iliescu_Lucian_Marius
+
+Binarul nice:
+
+Adresa functie vulnerabila nice: <print_flag+0xb5> (la adresa 0x8048666).
+
+Functia este vulnerabila deoarece spatiul alocat pe stiva (0xdc) este mai mic
+decat dimensiunea bufferului (0x126).
+
+Spargerea binarului nice:
+
+Am folosit objdump pentru a dezasambla binarul nice.
+Observam ca in main sunt mai multe apeluri ale functiei print_flag, fiecare apel
+avand un offset. Al cincilea apel din main este cel al functiei vulnerabile.
+In functia vulnerabila se observa ca se apeleaza adresa din registrul EAX, care
+este luata din [EBP+0X18]. Pentru a afisa flag-ul, trebuie sa punem in EBP+0x18
+adresa de inceput a functiei print flag (0x080485b1), adica (<print_flag>).
+Pentru a putea pune adresa dorita unde trebuie, trebuie sa umplem bufferele
+tuturor apelurilor lui print_flag din main, pana se ajungle la apelul functiei
+defecte inclusiv, deoarece bufferele se "suprapun" cand se apeleaza functiile
+si trebuie sa fie pline toate, pentru a avea acces la EBP+0x18. Am umplut
+bufferele functiilor care nu sunt vulnerabile cu un numar de caractere egal
+cu dimensiunea bufferelor. Iar pentru functia vulnerabila am umplut spatiul
+alocat pe stiva cu caractere (220) pentru a ajunge la EBP, si am mai adaugat 
+cateva (24) pentru a ajunge la EBP+0x18, apoi am pus acolo adresa functiei
+print flag (in little endian).
+
+Comanda folosita in generarea payloadului este: 
+python -c 'print "A"*416+"B"*208+"C"*196+"D"*460+"E"*244+"\xb1\x85\x04\x08"'> nice_payload
+
+NICE FLAG: NICE_FLAG{f969d75550c78bbf18e4a2ac7691f96d}
+
+Binarul naughty:
+
+Adresa functie vulnerabile naughty: <print_flag+0x125> (la adresa 0x80486d6)
+
+Functia este vulnerabila deoarece spatiul alocat pe stiva (0x15b) este mai mic
+decat dimensiunea bufferului (0x1f5).
+
+Spargerea binarului naughty:
+
+Am folosit objdump pentru a dezasambla binarul naughty.
+Modul de lucru este similar cu cel al binarului nice, dar la fiecare apel
+exista un cmp intr-o anumita zona din buffer, fiind necesar sa se puna
+o parte din payloadul bufferului urmata de adresa necesara pentru a trece
+de cmp, iar la final se pune partea ramasa din payloadul bufferului. Pentru a
+determina unde trebuie pusa adresa necesara trecerii de cmp, am folosit gdb
+pentru a-mi afla pozitia fata de locul unde trebuie sa pun adresa respectiva.
+Dupa ce am umplut bufferele cu caractere, am mai adaugat 16 caractere pentru
+a ajunge la EBP+0x10 si am pus acolo adresa de inceput a functiei print flag
+(0x080485b1 in little endian).
+
+Comanda folosita in generarea payloadului este:
+python -c 'print "A"+"\x6a\x1a\x19\xdb"+"A"*255+"B"*291+ "\xfc\x0e\x85\x10"+"C"*89+
+"\x61\xba\x99\x51"+283*"D"+"\x3e\x25\xe6\xda"+163*"E"+"\x68\x82\x65\xb5"+274*"F"+
+"\xee\xb2\xb3\xa2"+"G"*88+"\xb1\x85\x04\x08"' > naughty_payload
+
+NAUGHTY FLAG: NAUGHTY_FLAG{dcf4598ca6806057868129924852b62a}

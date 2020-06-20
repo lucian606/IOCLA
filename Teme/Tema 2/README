@@ -1,0 +1,57 @@
+Iliescu Lucian-Marius 324CC
+
+In definirea unor functii au fost adaugate si dimensiunile imaginii ca parametri
+pentru a putea face afisarea direct in functie.
+
+Task 1:
+	-se alege o cheie care se initializeaza cu 0
+	-se aplica xor cu cheia pe fiecare linie si se cauta cuvantul
+	-daca nu se gaseste cuvantul, incrementez cheia si se repeta pasul precedent
+	-dupa ce am gasit linia, o reparcurg si afisez caracter cu caracter pana se
+gaseste terminatorul de sir sau pana se termina linia
+
+Task 2:
+	-se foloseste functia de brute_force de la taskul 1 care determina cheia
+si linia pe care se mesajul
+	-se afla imaginea originala,aplicand xor pe imaginea data cu cheia
+	-se introduce mesajul caracter cu caracter in matrice
+	-se calculeaza noua cheie
+	-se cripteaza imaginea facand xor cu cheia noua
+
+Task 3:
+	-se extrag argumentele din linia de comanda si ma pozitionez la indexul dat	
+	-se parcurge mesajul caracter cu caracter si i se aplica codificarea
+specifica, punandu-se fiecare caracter din codificare pe cate un element din
+matrice, incepand de la indexul dat
+	
+Task 4:
+	-se extrag argumentele din linia de comanda si ma pozitionez la indexul dat
+	-se alege un registru pe post de masca si se initializeaza cu 1
+	-se fac shiftari la stanga pe masca pana ajung la bitul de pe pozitia curenta
+	-se face si logic intre masca si caracterul din sir, iar rezultatul va fi
+valoarea bitului din pozitia aia
+	-se face o shiftare pe dreapta si una pe stanga pentru a reseta lsb-ul
+elementului din matrice si se adauga 1 daca bitul calculat e 1
+	-cand se calculeaza 8 biti se trece la urmatorul caracter
+	-la final ultimele 8 elemente vor avea lsb 0 datorita terminatorului de sir
+
+Task 5:
+	-se extrag argumentele din linia de comanda si ma pozitionez la indexul dat
+	-se retine caracterul curent intr-un registru, care se formeaza din lsbul a
+8 elemente consecutive din matrice
+	-se calculeaza lsb al elementului curent si se adauga la caracter
+(char=2*char+lsb),cand am trecut de 8 lsb se trece la un caracter nou
+
+Task 6:
+	-in realizarea acestui task s-a folosit o functie manuala de printare a
+imaginii blurate, calculandu-se valoarea blurata a pixelilor, facandu-se
+imediat afisarea, fara sa mai fie nevoie sa modific matricea, intrucat in
+calculul unui pixel blurat se folosesc pixelii originali si nu cei modificati
+	-se afiseaza header-ul imaginii
+	-se parcurge matricea si verific daca pixelul se afla pe margine
+(prima/ultima linie sau prima/ultima coloana)
+	-daca pixelul e pe margine se afiseaza direct valoarea
+	-daca pixelul nu e pe margine se calculeaza valoarea nou facand media cu
+vecinii si se afiseaza noua valoare fara a modifca matricea
+
+P.S. Thanks for reading the image! ^^
