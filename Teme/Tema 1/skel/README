@@ -1,0 +1,39 @@
+Iliescu Lucian-Marius 324CC
+
+Accesarea membrilor structurii:
+	-tinand cont de faptul ca structura este de tip struct node*, este nevoie
+de o dereferentiere pentru a ajunge la structura (pentru a scapa de pointer),
+dupa care se mai face o dereferentiere pentru a accesa membrii structurii.
+De exemplu am in ebx radacina arboreluri: mov ecx, [ebx] (imi permite sa
+accesez structura), iar mov ecx, [ecx+0/4/8] (imi permite sa ii accesez
+membrii, +0 pentru date, +4 pentru fiul stang si +8 pentru fiul drept).
+
+Atoi:
+	-se verifica daca sirul incepe cu '-', iar daca incepe se foloseste un
+registru (esi) pe post de flag de semn
+	-se parcurge sirul caracter cu caracter, scazand codul ascii al lui '0'
+pentru a obtine cifra curenta, adaugandu-se la numar
+	-dupa ce a fost parcurs sirul, daca acesta a inceput cu -, numarul va fi
+inmultit cu -1 folosind instructiunea neg
+
+Retinerea expresiei:
+	-se parcurge arborele si se adauga datele din noduri intr-un vector, care
+va fi folosit pentru a retine expresia
+
+Parcurgerea arborelui:
+	-se acceseaza datele din nodul curent in modul in care am descris mai sus
+	-se verifica daca stringul este un numar sau operator
+	-daca este numar i se aplica functia atoi
+	-se adauga numarul/operatorul in vector
+	-se executa apel recursiv pe stanga si pe dreapta, salvandu-se nodul curent
+intre apeluri deoarece dupa mov ebx, [ebx+4] , nu ma mai aflu pe nodul curent si
+trebuie retinut ebx (nodul) folosind stiva, fiind necesar la apelul pentru fiul
+drept
+
+Evaluarea expresiei:
+	-se incepe evaluarea expresiei de la dreapta la stanga
+	-daca se gaseste un numar, se adauga pe stiva
+	-daca se gaseste un operator, se scot doua elemente din stiva si se 
+executa operatia, rezultatul fiind pus pe stiva
+	-dupa parcurgerea vectorului ramane un element pe stiva care va fi contine
+rezultatul expresiei
